@@ -11,12 +11,14 @@ def register(request):
     data = request.data
     
     # Check if email already exists
-    if User.objects.filter(email=data.get('email')).exists():
+    if User.objects.filter(username=data.get('email')).exists():
         return Response({'error': 'User with this email already exists'}, status=status.HTTP_400_BAD_REQUEST)
     
     # Create user
     user = User.objects.create(
-        username=data.get('username'),
+        first_name=data.get('first_name'),
+        last_name=data.get('last_name'),
+        username=data.get('email'),
         email=data.get('email'),
         password=make_password(data.get('password'))
     )

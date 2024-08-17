@@ -3,22 +3,34 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Blog
-from .serializer import BlogSerializer
+from ...backend.blog.serializer import BlogSerializer
+from rest_framework.pagination import PageNumberPagination
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUserBlogs(request):
+    user = request.user
+    user_blogs = Blog.objects.filter(author=user)
+    serializer = BlogSerializer(user_blogs, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def getRandomBlogs(request):
-    blogs = Blog.objects.order_by('?')[:10]  # Retrieve 10 random blogs
-    serializer = BlogSerializer(blogs, many=True)
-    try:
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    except:
-        return Response("0 Blogs", status=status.HTTP_204_NO_CONTENT)
+    paginator = PageNumberPagination()
+    paginator.page_size = 10  # Number of blogs per page
+
+    blogs = Blog.objects.order_by('?')
+    result_page = paginator.paginate_queryset(blogs, request)
+    serializer = BlogSerializer(result_page, many=True)
+    return paginator.get_paginated_response(serializer.data)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createBlog(request):
     data = request.data
+    print(data)
     serializer = BlogSerializer(data=data)
+    print(serializer.initial_data)
     
     if serializer.is_valid():
         # Set the author to the current user
