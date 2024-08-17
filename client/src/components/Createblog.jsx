@@ -16,7 +16,7 @@ const Createblog = (props) => {
       const handleSave=async()=>{
         setIsSaving(true)
         const token = sessionStorage.getItem('accessToken'); 
-        console.log(token)
+        console.log(token,blog)
 
         const response = await fetch('http://localhost:8000/blog/create/', {
             method: 'POST',

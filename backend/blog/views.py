@@ -10,6 +10,7 @@ from rest_framework.pagination import PageNumberPagination
 @permission_classes([IsAuthenticated])
 def getUserBlogs(request):
     user = request.user
+    print(request.user)
     user_blogs = Blog.objects.filter(author=user)
     serializer = BlogSerializer(user_blogs, many=True)
     if serializer.is_valid():
@@ -23,20 +24,20 @@ def getAllBlogs(request):
     serializer = BlogSerializer(blogs, many=True)
     return Response(serializer.data,status=status.HTTP_200_OK)
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createBlog(request):
     data = request.data
     print(data)
-    # serializer = BlogSerializer(data=data)
-    # print(serializer.initial_data)
+    serializer = BlogSerializer(data=data)
+    print(serializer.initial_data)
     
-    # if serializer.is_valid():
-    #     # Set the author to the current user
-    #     serializer.save(author=request.user)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-    # else:
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if serializer.is_valid():
+        # Set the author to the current user
+        serializer.save(author=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
 @api_view(['PUT'])
