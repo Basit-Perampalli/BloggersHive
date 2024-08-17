@@ -42,12 +42,12 @@ const Myblogs = (props) => {
         fetchBlogs()
       },[])
   return (
-    <div style={{width:"100vw",margin:"15px 0 0 0"}}>
+    <div style={{width:"97vw",margin:"15px 0 0 0"}}>
         {blogs.length > 0 ? 
-        <Stack width={"99vw"} direction={"row"} alignItems={"center"} flexWrap={"wrap"} justifyContent={"space-around"} >
+        <Stack direction={"row"} alignItems={"center"} flexWrap={"wrap"} justifyContent={"space-around"} >
           {blogs.map((blog)=>{
-            return <div style={{minWidth:"357px",width:"27%",margin:"0 0 56px 0"}} key={blog.id}>
-              <BlogCard blog={blog}/>
+            return <div style={{minWidth:"345px",width:"27%",margin:"0 0 56px 0"}} key={blog.id}>
+              <BlogCard blog={blog} ismyblog={true} fetchBlogs={fetchBlogs}/>
             </div>
           })}
           </Stack>

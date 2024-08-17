@@ -39,9 +39,9 @@ const Blogs = () => {
         {blogs.length > 0 ? 
         <Stack width={"99vw"} direction={"row"} alignItems={"center"} flexWrap={"wrap"} justifyContent={"space-around"} >
           {blogs.map((blog)=>{
-            return <button style={{minWidth:"357px",width:"27%",margin:"0 0 56px 0"}} key={blog.id}>
-              <BlogCard blog={blog}/>
-            </button>
+            return <div style={{minWidth:"357px",width:"27%",margin:"0 0 56px 0"}} key={blog.id}>
+              <BlogCard blog={blog} ismyblog={false}/>
+            </div>
           })}
           </Stack>
         : <p>No blogs found.</p>}

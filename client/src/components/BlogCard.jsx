@@ -1,32 +1,66 @@
-import React from 'react'
-import { styled } from '@mui/material/styles';
+import React,{useState} from 'react'
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Modal from '@mui/material/Modal';
+
 
 const BlogCard = (props) => {
+  // const [openDelete,setOpenDelete] = useState(false);
+  // const [openEdit,setOpenEdit] = useState(false);
+
+  // const handleOpenDelete=()=>{
+  //   setOpenDelete(true)
+  // }
+  // const handleOpenEdit=()=>{
+  //   setOpenEdit(true)
+  // }
+  const handleDelete=async(blogId)=>{
+    const del = prompt("To confirm delete. Write 'delete'")
+    if (del!=='delete'){
+      return
+    }
+    const token = sessionStorage.getItem('accessToken'); // Retrieve the token from session storage
+
+    const response = await fetch(`http://localhost:8000/blog/delete/${blogId}/`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`, // Include the token in the headers
+            'Content-Type': 'application/json',
+        },
+    });
+
+    if (response.ok) {
+        console.log('Blog deleted successfully');
+        props.fetchBlogs()
+        // Handle the success (e.g., update the UI, fetch new list of blogs, etc.)
+    } else {
+        console.error('Error:', response.statusText);
+        // Handle the error (e.g., display an error message)
+    }
+  }
+  const handleEdit=()=>{
+    const del = prompt("To confirm delete. Write 'delete'")
+  }
+
     const blog = props.blog
   return (
     <Card sx={{height:"300px" }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            {blog.id}
+            {blog.author}
           </Avatar>
         }
         title={blog.title}
-        subheader={blog.created_at}
+        subheader={"Created at: "+blog.created_at}
       />
       {/* <CardMedia
         component="img"
@@ -39,8 +73,18 @@ const BlogCard = (props) => {
           {blog.content}
         </Typography>
       </CardContent>
+      {props.ismyblog?
+      <CardActions sx={{justifyContent:"space-around",marginTop:"110px"}}>
+        <IconButton onClick={()=>handleDelete(blog.id)} aria-label="delete blog">
+          <DeleteIcon />
+        </IconButton>
+        <IconButton onClick={handleEdit} aria-label="edit blog">
+          <EditIcon />
+        </IconButton>
+      </CardActions>:""}
       
     </Card>
+  
   )
 }
 
