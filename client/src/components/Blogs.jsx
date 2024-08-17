@@ -37,11 +37,11 @@ const Blogs = () => {
   return (
     <div style={{width:"100vw",margin:"15px 0 0 0"}}>
         {blogs.length > 0 ? 
-        <Stack width={"100vw"} direction={"row"} alignItems={"center"} flexWrap={"wrap"} justifyContent={"space-around"} >
+        <Stack width={"99vw"} direction={"row"} alignItems={"center"} flexWrap={"wrap"} justifyContent={"space-around"} >
           {blogs.map((blog)=>{
-            return <div style={{minWidth:"300px",margin:"0 0 56px 0"}} key={blog.id}>
+            return <button style={{minWidth:"357px",width:"27%",margin:"0 0 56px 0"}} key={blog.id}>
               <BlogCard blog={blog}/>
-            </div>
+            </button>
           })}
           </Stack>
         : <p>No blogs found.</p>}

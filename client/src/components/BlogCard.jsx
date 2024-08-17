@@ -18,7 +18,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 const BlogCard = (props) => {
     const blog = props.blog
   return (
-    <Card sx={{ maxWidth: 345,height:"300px" }}>
+    <Card sx={{height:"300px" }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">

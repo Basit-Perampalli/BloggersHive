@@ -4,18 +4,18 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Blog
 from .serializer import BlogSerializer
-from rest_framework.pagination import PageNumberPagination
+from django.contrib.auth.models import User
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getUserBlogs(request):
+    # data = request.data
     user = request.user
-    print(request.user)
     user_blogs = Blog.objects.filter(author=user)
     serializer = BlogSerializer(user_blogs, many=True)
-    if serializer.is_valid():
-        return Response(serializer.data,status=status.HTTP_302_FOUND)
-    return Response(serializer.error_messages, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    # print(serializer.data)
+    return Response(serializer.data,status=status.HTTP_302_FOUND)
+    # return Response(serializer.error_messages, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 def getAllBlogs(request):
@@ -34,6 +34,7 @@ def createBlog(request):
     
     if serializer.is_valid():
         # Set the author to the current user
+        # print(request.user)
         serializer.save(author=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:

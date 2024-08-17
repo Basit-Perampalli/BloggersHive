@@ -11,23 +11,24 @@ const Myblogs = (props) => {
     const fetchBlogs = async () => {
         
         const token = sessionStorage.getItem('accessToken'); 
-        console.log(token);
+        console.log(token,"Inside myblogs");
         
             if (token) {
                 try {
                     const response = await fetch('http://127.0.0.1:8000/blog/getuserblogs/', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}` ,
-                        },
+                      method: 'GET',
+                      headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`, 
+                      }
                     });
 
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
+                    // if (!response.ok) {
+                    //     throw new Error('Network response was not ok');
+                    // }
 
                     const data = await response.json();
+                    console.log(data)
                     setBlogs(data); // Set the blogs data to state
                 } catch (error) {
                     console.error('There was a problem with the fetch operation:', error);
@@ -43,9 +44,9 @@ const Myblogs = (props) => {
   return (
     <div style={{width:"100vw",margin:"15px 0 0 0"}}>
         {blogs.length > 0 ? 
-        <Stack width={"100vw"} direction={"row"} alignItems={"center"} flexWrap={"wrap"} justifyContent={"space-around"} >
+        <Stack width={"99vw"} direction={"row"} alignItems={"center"} flexWrap={"wrap"} justifyContent={"space-around"} >
           {blogs.map((blog)=>{
-            return <div style={{minWidth:"300px",margin:"0 0 56px 0"}} key={blog.id}>
+            return <div style={{minWidth:"357px",width:"27%",margin:"0 0 56px 0"}} key={blog.id}>
               <BlogCard blog={blog}/>
             </div>
           })}
