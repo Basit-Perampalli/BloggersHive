@@ -1,10 +1,10 @@
 
 from django.urls import path
-from ...server.blog.views import createBlog,updateBlog,deleteBlog,getRandomBlogs,getUserBlogs
+from .views import createBlog,updateBlog,deleteBlog,getAllBlogs,getUserBlogs
 
 urlpatterns = [
     path("create/", createBlog, name="createBlog"),
-    path('getblogs/',getRandomBlogs,name='getRandomBlogs'),
+    path('getblogs/',getAllBlogs,name='getAllBlogs'),
     path('getuserblogs/',getUserBlogs,name='getUserBlogs'),
     path('<int:blog_id>/update/', updateBlog, name='updateBlog'),
     path('<int:blog_id>/delete/', deleteBlog, name='deleteBlog'),

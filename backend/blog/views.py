@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Blog
-from ...backend.blog.serializer import BlogSerializer
+from .serializer import BlogSerializer
 from rest_framework.pagination import PageNumberPagination
 
 @api_view(['GET'])
@@ -12,32 +12,31 @@ def getUserBlogs(request):
     user = request.user
     user_blogs = Blog.objects.filter(author=user)
     serializer = BlogSerializer(user_blogs, many=True)
-    return Response(serializer.data)
+    if serializer.is_valid():
+        return Response(serializer.data,status=status.HTTP_302_FOUND)
+    return Response(serializer.error_messages, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
-def getRandomBlogs(request):
-    paginator = PageNumberPagination()
-    paginator.page_size = 10  # Number of blogs per page
+def getAllBlogs(request):
+    blogs = Blog.objects.all()
+    print(blogs)
+    serializer = BlogSerializer(blogs, many=True)
+    return Response(serializer.data,status=status.HTTP_200_OK)
 
-    blogs = Blog.objects.order_by('?')
-    result_page = paginator.paginate_queryset(blogs, request)
-    serializer = BlogSerializer(result_page, many=True)
-    return paginator.get_paginated_response(serializer.data)
-
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def createBlog(request):
     data = request.data
     print(data)
-    serializer = BlogSerializer(data=data)
-    print(serializer.initial_data)
+    # serializer = BlogSerializer(data=data)
+    # print(serializer.initial_data)
     
-    if serializer.is_valid():
-        # Set the author to the current user
-        serializer.save(author=request.user)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # if serializer.is_valid():
+    #     # Set the author to the current user
+    #     serializer.save(author=request.user)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+    # else:
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
 @api_view(['PUT'])

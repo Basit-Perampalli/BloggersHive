@@ -1,6 +1,6 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
+import Box, { boxClasses } from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -12,13 +12,19 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useEffect } from 'react';
+import {useNavigate} from 'react-router-dom'
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = [['Blogs',''],['My Blogs','myblogs'],['Create','createblog']];
+// const settings = ['Profile','Logout'];
 
-function Navbar() {
+function Navbar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate()
+  const {isLogin,setIsLogin} = props
+
+  
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -35,27 +41,36 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
+
+  const handleNavigate = (path)=>{
+    navigate(`/${path}`)
+  }
+
+  const handleLogout=()=>{
+    sessionStorage.removeItem('accessToken');
+  sessionStorage.removeItem('refreshToken');
+  setIsLogin(false)
+  navigate('/')
+  }
+
   return (
     <AppBar >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
-            variant="h6"
+            variant="h5"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: 'black',
               textDecoration: 'none',
             }}
           >
-            LOGO
+            BloggersHive
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -88,8 +103,8 @@ function Navbar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page[0]} onClick={()=>{handleCloseNavMenu(); handleNavigate(page[1])}}>
+                  <Typography textAlign="center">{page[0]}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -113,22 +128,22 @@ function Navbar() {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          {isLogin?<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={page[0]}
+                onClick={()=>{handleCloseNavMenu(); handleNavigate(page[1])}}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page[0]}
               </Button>
             ))}
-          </Box>
+          </Box>:<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }}}></Box>}
 
-          <Box sx={{ flexGrow: 0 }}>
+          {isLogin?<Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <Avatar src="/broken-image.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -147,13 +162,18 @@ function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={"proflie"} onClick={()=>{handleCloseUserMenu(); setProfileModal(true)}}>
+                  <Typography textAlign="center">Profile</Typography>
                 </MenuItem>
-              ))}
+                <MenuItem key={"logout"} onClick={()=>{handleCloseUserMenu(); handleLogout()}}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
             </Menu>
-          </Box>
+          </Box>:<Button onClick={()=>{handleNavigate("login")}}
+                sx={{ my: 2, color: 'white',background:"black", display: 'block' }}
+              >
+                Login
+              </Button>}
         </Toolbar>
       </Container>
     </AppBar>
