@@ -47,8 +47,8 @@ function Navbar(props) {
   }
 
   const handleLogout=()=>{
-    sessionStorage.removeItem('accessToken');
-  sessionStorage.removeItem('refreshToken');
+    localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
   setIsLogin(false)
   navigate('/')
   }

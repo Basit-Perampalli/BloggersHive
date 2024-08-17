@@ -12,7 +12,7 @@ function App() {
   const [isLogin,setIsLogin] = useState(false);
 
   useEffect(() => {
-    const token = sessionStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken');
     console.log(token)
     if (token) {
       console.log('Token found:', token);

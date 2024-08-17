@@ -27,7 +27,7 @@ const BlogCard = (props) => {
     if (del!=='delete'){
       return
     }
-    const token = sessionStorage.getItem('accessToken'); // Retrieve the token from session storage
+    const token = localStorage.getItem('accessToken'); // Retrieve the token from session storage
 
     const response = await fetch(`http://localhost:8000/blog/delete/${blogId}/`, {
         method: 'DELETE',
@@ -47,7 +47,7 @@ const BlogCard = (props) => {
     }
   }
   const handleEdit=()=>{
-    const del = prompt("To confirm delete. Write 'delete'")
+    
   }
 
     const blog = props.blog

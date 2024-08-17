@@ -32,9 +32,9 @@ const Signup = (props) => {
         
             const received_data = await response.json();
             console.log('Registration successful:', received_data);
-            sessionStorage.setItem('accessToken', received_data.access);
-            sessionStorage.setItem('refreshToken', received_data.refresh);
-            console.log(sessionStorage.getItem('accessToken'));
+            localStorage.setItem('accessToken', received_data.access);
+            localStorage.setItem('refreshToken', received_data.refresh);
+            console.log(localStorage.getItem('accessToken'));
             
             navigate('/')
             props.setIsLogin(true)

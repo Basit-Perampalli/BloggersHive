@@ -10,7 +10,7 @@ const Myblogs = (props) => {
 
     const fetchBlogs = async () => {
         
-        const token = sessionStorage.getItem('accessToken'); 
+        const token = localStorage.getItem('accessToken'); 
         console.log(token,"Inside myblogs");
         
             if (token) {
