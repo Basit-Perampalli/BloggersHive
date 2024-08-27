@@ -19,7 +19,7 @@ def getUserBlogs(request):
 
 @api_view(['GET'])
 def getAllBlogs(request):
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.all().order_by('?')
     print(blogs)
     serializer = BlogSerializer(blogs, many=True)
     return Response(serializer.data,status=status.HTTP_200_OK)

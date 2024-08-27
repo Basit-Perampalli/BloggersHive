@@ -26,7 +26,7 @@ const Login = (props) => {
             
             if (!response.ok) {
               const errorData = await response.json();
-              console.error('Invalid Credentials', errorData);
+              alert('Invalid Credentials', errorData);
               return;
             }
         

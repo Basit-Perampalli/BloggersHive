@@ -26,7 +26,7 @@ const Signup = (props) => {
         
             if (!response.ok) {
               const errorData = await response.json();
-              console.error('Error registering user:', errorData);
+              alert('User already Exist', response.status);
               return;
             }
         
@@ -39,7 +39,7 @@ const Signup = (props) => {
             navigate('/')
             props.setIsLogin(true)
           } catch (error) {
-            console.error('Error during registration:', error);
+            alert('Error during registration:', error);
           }
     }
 

@@ -68,7 +68,7 @@ const BlogCard = (props) => {
         image="/static/images/cards/paella.jpg"
         alt="Paella dish"
       /> */}
-      <CardContent>
+      <CardContent >
         <Typography variant="body2" color="text.secondary">
           {blog.content}
         </Typography>

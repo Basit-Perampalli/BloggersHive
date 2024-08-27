@@ -13,9 +13,9 @@ Authentication: JWT (JSON Web Token)
 
 Installation
 1. Clone the Repository
-
 git clone https://github.com/your-username/blog-app.git
 cd blog-app
+
 2. Backend Setup
 a. Install Backend Dependencies
 pip install -r requirements.txt
